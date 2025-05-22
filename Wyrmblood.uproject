@@ -127,7 +127,11 @@
 			"Enabled": true
 		},
 		{
-			"Name": "ModelViewViewModelPreview",
+			"Name": "UMGWidgetPreview",
+			"Enabled": false
+		},
+		{
+			"Name": "GameFeatures",
 			"Enabled": true
 		}
 	]
