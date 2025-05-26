@@ -79,8 +79,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "Default Input Mapping"))
 	UInputMappingContext* IMC_Default;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "HolBar Input Mapping"))
-	UInputMappingContext* IMC_HolBar;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "HotBar Input Mapping"))
+	UInputMappingContext* IMC_HotBar;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "Camera Input Mapping"))
+	UInputMappingContext* IMC_Camera;
 
 	// Array of default input contexts with priorities
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")

@@ -16,7 +16,8 @@ AWBPlayerController::AWBPlayerController()
 	PlayerReference = nullptr;
 	IsControllerReady = false;
 	IMC_Default = nullptr;
-	IMC_HolBar = nullptr;
+	IMC_HotBar = nullptr;
+	IMC_Camera = nullptr;
 }
 
 void AWBPlayerController::OnPossess(APawn* InPawn)
@@ -110,9 +111,14 @@ void AWBPlayerController::SetGameDefaultInputMapping(bool bEnabled)
 	}
 	
 	// Add HolBar input mapping if available
-	if (IMC_HolBar)
+	if (IMC_HotBar)
 	{
-		SetInputMapping(bEnabled, IMC_HolBar, 1);
+		SetInputMapping(bEnabled, IMC_HotBar, 0);
+	}
+
+	if (IMC_Camera)
+	{
+		SetInputMapping(bEnabled, IMC_Camera, 0);
 	}
 
 	// Process any additional default mappings from array
@@ -120,7 +126,7 @@ void AWBPlayerController::SetGameDefaultInputMapping(bool bEnabled)
 	{
 		if (UInputMappingContext* LoadedContext = DefaultInputMappings[i].LoadSynchronous())
 		{
-			SetInputMapping(bEnabled, LoadedContext, i + 2); // Start priority at 2
+			SetInputMapping(bEnabled, LoadedContext, i + 1); // Start priority at 1
 		}
 	}
 }
