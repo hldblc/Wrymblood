@@ -5,98 +5,140 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "Net/UnrealNetwork.h"
+#include "WBCore/CoreUI/UComponents/WBUIManager.h"
+#include "WBCore/CoreInterface/IController/WBControllerInterface.h"
 #include "WBPlayerController.generated.h"
 
-// Forward declaration
+// Forward declarations
 class AWBBasePlayer;
 class UInputMappingContext;
 
-// Declare the delegate type for the event dispatcher
+
+// Delegate for when the player controller is fully ready
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerControllerReady, AWBPlayerController*, GamePlayerController);
 
 UCLASS(BlueprintType, Blueprintable, meta=(Category="Player Controller"))
-class WYRMBLOOD_API AWBPlayerController : public APlayerController
+class WYRMBLOOD_API AWBPlayerController : public APlayerController, public IWBControllerInterface
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	// Constructor
-	AWBPlayerController();
+    // ================================ Core Properties ================================ //
+    /** Reference to the possessed player pawn */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Controller")
+    AWBBasePlayer* PlayerReference;
 
-	virtual void OnPossess(APawn* InPawn) override;
+    /** Flag indicating whether controller initialization is complete */
+    UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRep_IsControllerReady, Category = "Player Controller")
+    bool IsControllerReady;
 
-	// Replication
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	
-	// Getter for PlayerReference
-	UFUNCTION(BlueprintCallable, Category = "Player Controller")
-	AWBBasePlayer* GetPlayerReference() const { return PlayerReference; }
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Controller")
+    UWBUIManager* UIManager;
 
-	// Setter for PlayerReference
-	UFUNCTION(BlueprintCallable, Category = "Player Controller")
-	void SetPlayerReference(AWBBasePlayer* NewPlayerReference) { PlayerReference = NewPlayerReference; }
+    // ================================ Core Functions ================================ //
+    /** Constructor */
+    AWBPlayerController();
 
-	// Getter for IsControllerReady
-	UFUNCTION(BlueprintCallable, Category = "Player Controller")
-	bool GetIsControllerReady() const { return IsControllerReady; }
+    /** Called when this controller possesses a pawn */
+    virtual void OnPossess(APawn* InPawn) override;
 
-	// Setter for IsControllerReady
-	UFUNCTION(BlueprintCallable, Category = "Player Controller")
-	void SetIsControllerReady(bool bNewIsReady) { IsControllerReady = bNewIsReady; }
+    /** Set up replication for properties */
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	// Event Dispatcher
-	UPROPERTY(BlueprintAssignable, Category = "Player Controller Events")
-	FOnPlayerControllerReady OnPlayerControllerReady;
+    /** Get the stored player reference */
+    UFUNCTION(BlueprintCallable, Category = "Player Controller")
+    AWBBasePlayer* GetPlayerReference() const;
 
-	// Input Mapping Management
-	UFUNCTION(BlueprintCallable, Category = "Input")
-	void SetInputMapping(bool bEnabled, UInputMappingContext* MappingContext, int32 Priority = 0);
+    /** Set the stored player reference */
+    UFUNCTION(BlueprintCallable, Category = "Player Controller")
+    void SetPlayerReference(AWBBasePlayer* BasePlayerReference);
 
-	// Set default game input mapping - now supports multiple contexts
-	UFUNCTION(BlueprintCallable, Category = "Input")
-	void SetGameDefaultInputMapping(bool bEnabled);
+    /** Check if the controller is ready */
+    UFUNCTION(BlueprintCallable, Category = "Player Controller")
+    bool GetIsControllerReady() const;
 
-	// Add specific input mapping context
-	UFUNCTION(BlueprintCallable, Category = "Input")
-	void AddInputMappingContext(UInputMappingContext* MappingContext, int32 Priority = 0);
+    /** Mark the controller as ready or not */
+    UFUNCTION(BlueprintCallable, Category = "Player Controller")
+    void SetIsControllerReady(bool bIsControllerReady);
 
-	// Remove specific input mapping context
-	UFUNCTION(BlueprintCallable, Category = "Input")
-	void RemoveInputMappingContext(UInputMappingContext* MappingContext);
+    /** Broadcast when controller setup is finished */
+    UPROPERTY(BlueprintAssignable, Category = "Player Controller Events")
+    FOnPlayerControllerReady OnPlayerControllerReady;
 
-	// Clear all input mapping contexts
-	UFUNCTION(BlueprintCallable, Category = "Input")
-	void ClearAllInputMappings();
+    /** Activate/Deactivate the UI Input Mappings */
+    UFUNCTION(BlueprintCallable, Category = "Input")
+    void SetUIInputMappingUI(bool bEnabled);
+    
+    /** Enable or disable a specific input mapping context */
+    UFUNCTION(BlueprintCallable, Category = "Input")
+    void SetInputMapping(bool bEnabled, UInputMappingContext* MappingContext, int32 Priority = 0);
 
+    /** Enable or disable the default game input mapping */
+    UFUNCTION(BlueprintCallable, Category = "Input")
+    void SetGameDefaultInputMapping(bool bEnabled);
+
+    /** Add an input mapping context at a given priority */
+    UFUNCTION(BlueprintCallable, Category = "Input")
+    void AddInputMappingContext(UInputMappingContext* MappingContext, int32 Priority = 0);
+
+    /** Remove an input mapping context */
+    UFUNCTION(BlueprintCallable, Category = "Input")
+    void RemoveInputMappingContext(UInputMappingContext* MappingContext);
+
+    /** Clear all added input mapping contexts */
+    UFUNCTION(BlueprintCallable, Category = "Input")
+    void ClearAllInputMappings();
+    
+    //================================ Core Interface Functions ================================ //
+    virtual void CloseInGameMenu_Implementation() override;
+    virtual void DisableUIMode_Implementation() override;
+    virtual void EnableUIMode_Implementation(UUserWidget* FocusedWidget) override;
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Controller")
-	AWBBasePlayer* PlayerReference;
+    // ================================ Core Properties ================================ //
+    /** Default input mapping context */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "Default Input Mapping"))
+    UInputMappingContext* IMC_Default;
 
-	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRep_IsControllerReady, Category = "Player Controller")
-	bool IsControllerReady;
+    /** Hotbar input mapping context */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "HotBar Input Mapping"))
+    UInputMappingContext* IMC_HotBar;
 
-	// Default Input Mapping Contexts - Multiple contexts support
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "Default Input Mapping"))
-	UInputMappingContext* IMC_Default;
+    /** Camera input mapping context */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "Camera Input Mapping"))
+    UInputMappingContext* IMC_Camera;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "HotBar Input Mapping"))
-	UInputMappingContext* IMC_HotBar;
+    /** UI InGame Mapping Context */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "UI In Game Mapping"))
+    UInputMappingContext* IMC_UI_InGame;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "Camera Input Mapping"))
-	UInputMappingContext* IMC_Camera;
+    /** UI Generic Mapping Context */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (DisplayName = "UI Generic Mapping"))
+    UInputMappingContext* IMC_UI_Generic;
+    
+    /** List of additional default input mappings with priorities */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+    TArray<TSoftObjectPtr<UInputMappingContext>> DefaultInputMappings;
 
-	// Array of default input contexts with priorities
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	TArray<TSoftObjectPtr<UInputMappingContext>> DefaultInputMappings;
-	
 private:
-	// RepNotify function
-	UFUNCTION()
-	void OnRep_IsControllerReady();
+    // ================================ Core SERVER Functions ================================ //
+    /** Notify the server that the controller is ready */
+    UFUNCTION(Server, Reliable, Category = "Player Controller")
+    void Server_SetPlayerControllerReady();
 
-	UFUNCTION(Client, Reliable, Category = "Player Controller")
-	void Client_OnPossess();
+    // ================================ Core CLIENT Functions ================================ //
+    /** Client-side handling when possession occurs */
+    UFUNCTION(Client, Reliable, Category = "Player Controller")
+    void Client_OnPossess();
 
-	UFUNCTION(Server, Reliable, Category = "Player Controller")
-	void Server_SetPlayerControllerReady();
+    // ================================ Core Functions ================================ //
+    /** Called when IsControllerReady is replicated */
+    UFUNCTION()
+    void OnRep_IsControllerReady();
+
+    /**
+     * Event triggered when the UI manager signals that the UI is fully initialized.
+     * @param UIManagerRef A reference to the UI manager instance responsible for managing the user interface.
+     */
+    UFUNCTION()
+    void OnUIReadyEvent(UWBUIManager* UIManagerRef);
 };

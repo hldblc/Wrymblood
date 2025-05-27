@@ -123,10 +123,6 @@
 			"Enabled": true
 		},
 		{
-			"Name": "UMGWidgetPreview",
-			"Enabled": false
-		},
-		{
 			"Name": "GameFeatures",
 			"Enabled": true
 		},
@@ -136,6 +132,10 @@
 		},
 		{
 			"Name": "CommonUI",
+			"Enabled": true
+		},
+		{
+			"Name": "ModelViewViewModelPreview",
 			"Enabled": true
 		}
 	]

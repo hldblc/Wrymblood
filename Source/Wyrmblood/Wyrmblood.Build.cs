@@ -35,6 +35,7 @@ public class Wyrmblood : ModuleRules
             "AIModule",
             "NavigationSystem",
             "CommonUI",
+            "CommonInput",
             "UMG",
             "Slate",
             "SlateCore",
@@ -51,7 +52,9 @@ public class Wyrmblood : ModuleRules
             "ChaosSolverEngine",
             "RHI",
             "AssetRegistry",
-            "ApplicationCore"
+            "ApplicationCore",
+            "ModelViewViewModel",
+            "ModelViewViewModelEditor"
         });
 
         if (Target.bBuildEditor)
