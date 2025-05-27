@@ -3,7 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "WBCore/CoreGame/CoreData/DStructs/WBCharacterStructs.h"
+#include "WBCore/CoreGame/CoreData/DStructs/SCharacter/WBCharacterStructs.h"
 #include "WBCharacterInterface.generated.h"
 
 class AWBBasePlayer;
