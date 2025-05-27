@@ -26,7 +26,7 @@ public:
 	TArray<FUWBInventorySlot> InventorySlots;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Settings")
-	int32 MaxSlotcount;
+	int32 MaxSlotCount;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Settings")
 	bool bEnabledWeightSystem;
