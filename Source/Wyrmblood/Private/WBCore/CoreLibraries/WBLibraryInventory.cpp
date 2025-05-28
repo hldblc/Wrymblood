@@ -48,3 +48,13 @@ UWBItemData* UWBLibraryInventory::MakeItemToAdd(TSoftObjectPtr<UWBItemData> Item
 	}
 }
 
+void UWBLibraryInventory::GetSlotWeight(FUWBInventorySlot Slot, float& Weight)
+{
+	Weight = Slot.ItemQuatity*Slot.ItemDataAsset->ItemWeight;
+}
+
+void UWBLibraryInventory::HasSlotContainedItem(FUWBInventorySlot Slot, bool& HasContainedItem)
+{
+	HasContainedItem = Slot.ContainedItem.ContainedItemDataAsset.IsValid();
+}
+

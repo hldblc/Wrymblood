@@ -22,7 +22,7 @@ UWBItemData::UWBItemData()
 	ActorSpawnClass = nullptr;
 }
 
-TSoftObjectPtr<UTexture2D> UWBItemData::ItemIcon_Implementation() const
+TSoftObjectPtr<UTexture2D> UWBItemData::GetItemIcon_Implementation() const
 {
 	return ItemIcon;
 }

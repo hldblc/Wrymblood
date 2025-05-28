@@ -4,7 +4,7 @@
 
 FUWBInventorySlot::FUWBInventorySlot()
 	: ItemID(NAME_None)
-	, ItemQuatity(0)  // Note: You have a typo here - should be "ItemQuantity"
+	, ItemQuatity(0)  
 	, SlotIndex(-1)
 	, ItemDataAsset(nullptr)
 	, CurrentDurability(0.0f)
@@ -12,5 +12,5 @@ FUWBInventorySlot::FUWBInventorySlot()
 	, ItemWeight(0.0f)
 	, InventoryRef(nullptr)
 {
-	// Constructor body can remain empty since we're using member initializer list
+	
 }

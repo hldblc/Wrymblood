@@ -24,7 +24,7 @@ public:
 	UWBItemData();
 
 	// ============================== Core Interface Functions ==============================//
-	virtual TSoftObjectPtr<UTexture2D> ItemIcon_Implementation() const override;
+	virtual TSoftObjectPtr<UTexture2D> GetItemIcon_Implementation() const override;
 
 	virtual void IsItemStackable_Implementation(bool& bIsStackable, int32& OutStackSize) const override;
 	virtual UWBItemData* GetItemDataAsset_Implementation() const override;

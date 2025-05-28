@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "WBSlotContainedItem.h"
 #include "WBCore/CoreGame/CoreData/DDataAsset/PrimaryAssets/WBItemData.h"
 #include "WBInventoryStructs.generated.h"
 
@@ -41,7 +42,12 @@ public:
 	float ItemWeight;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category="Inventory Slot")
+	FWBSlotContainedItem ContainedItem;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category="Inventory Slot")
 	TObjectPtr<UWBInventoryBase> InventoryRef;
+
+
 
 	
 };

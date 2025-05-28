@@ -18,12 +18,19 @@ class WYRMBLOOD_API UWBLibraryInventory : public UBlueprintFunctionLibrary
 
 public:
 	// ===================================== Core Utility Functions ===================================== //
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="InventoryUtility")
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="InventoryUtilityLibrary")
 	static void IsSlotEmpty(const FUWBInventorySlot Slot, bool& Empty);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="InventoryUtility")
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="InventoryUtilityLibrary")
 	static void IsSlotNotEmpty(const FUWBInventorySlot Slot, bool& NotEmpty);
 
-	UFUNCTION(Blueprintable, BlueprintCallable, BlueprintPure, Category="InventoryUtility")
+	UFUNCTION(Blueprintable, BlueprintCallable, BlueprintPure, Category="InventoryUtilityLibrary")
 	static UWBItemData* MakeItemToAdd(TSoftObjectPtr<UWBItemData> ItemDataSoftObject, int32 Quatity, FUWBInventorySlot& Item);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="InventoryUtilityLibrary")
+	static void GetSlotWeight(FUWBInventorySlot Slot, float& Weight);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="InventoryUtilityLibrary")
+	static void HasSlotContainedItem(FUWBInventorySlot Slot, bool& HasContainedItem);
+	
 };
